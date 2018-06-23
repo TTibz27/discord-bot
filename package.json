@@ -1,0 +1,14 @@
+{
+  "name": "meme-machine",
+  "version": "1.0.0",
+  "description": "meme",
+  "main": "bot.js",
+  "author": "Crunchy",
+  "dependencies": {
+    "discord.io": "^2.5.3",
+    "discord.js": "^11.3.2",
+    "request": "^2.87.0",
+    "select-random-file": "^1.1.0",
+    "winston": "^2.4.2"
+  }
+}
