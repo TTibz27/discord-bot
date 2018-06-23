@@ -33,7 +33,10 @@ console.log("starting....");
 const client = new Discord.Client();
 
 client.on('ready', () => {
+
+    client.user.setUsername("MemeBot 2.0");
     console.log(`Logged in as ${client.user.tag}!`);
+
 });
 
 client.on('message', msg => {
@@ -84,13 +87,18 @@ client.on('message', msg => {
 
         switch(cmd){
             case 'add':
-                if (args[1]){let folder = args[1].toLowerCase();}
+
+                let folder = "";
+                if (args[1]){folder = args[1].toLowerCase();}
 
                 let tempDir = imageDir;
+
                 if (folder === "crivitz"){
                     tempDir = "./images/crivitz";
                 }
-                else{ folder = "general"}
+                else{
+                    folder = "general";
+                }
 
                 if(msg.attachments){
                     let url = msg.attachments.first().url.replace('https','http');
