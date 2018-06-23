@@ -4,7 +4,7 @@ const auth = require('./auth.json');
 const request =require('request');
 const randomFile = require('select-random-file');
 const fs = require('fs');
-const scheduler = require('./scheduler');
+const schedufdsaler = require('./scheduler');
 
 const imageDir = "./images";
 const crivitzDir = "./images/crivitz";
