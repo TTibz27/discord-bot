@@ -4,7 +4,8 @@ const auth = require('./auth.json');
 const request =require('request');
 const randomFile = require('select-random-file');
 const fs = require('fs');
-const schedufdsaler = require('./scheduler');
+const scheduler = require('./scheduler');
+const diceRoller = require('./dice-roller');
 
 const imageDir = "./images";
 const crivitzDir = "./images/crivitz";
@@ -148,6 +149,10 @@ client.on('message', msg => {
 
             case 'schedule':
 
+                break;
+
+            case 'roll':
+                diceRoller.parseDiceCommand(args[1].toLowerCase());
                 break;
 
         }
