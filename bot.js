@@ -152,9 +152,12 @@ client.on('message', msg => {
                 break;
 
             case 'roll':
-               msg.reply(diceRoller.parseDiceCommand(args[1].toLowerCase()));
+               msg.reply(diceRoller.parseDiceCommand(args[1]));
                 break;
 
+            case 'flip':
+                msg.reply(diceRoller.coinFlip());
+                break
         }
     }
 });
