@@ -9,6 +9,8 @@ const diceRoller = require('./dice-roller');
 
 const imageDir = "./images";
 const crivitzDir = "./images/crivitz";
+const wowDir = "./images/wow";
+const dolphDir = './images/dolph';
 
 function downloadImage (uri, filename, callback){
 
@@ -126,13 +128,41 @@ client.on('message', msg => {
                         'Your Crvitz meme: '+file,
                         {
                             files: [{
-                                attachment: crivitzDir+'/' +file,
+                                attachment: crivitzDir + '/' +file,
                                 name: ''
                             }]
                         })
                 });
 
                 break;
+
+            case 'wow':
+            randomFile(wowDir, (err, file) => {
+                msg.channel.send(
+                    'wow!',
+                    {
+                        files: [{
+                            attachment: wowDir + '/' +file,
+                            name: ''
+                        }]
+                    })
+            });
+            break;
+
+            case 'dolph':
+            msg.channel.send('I WILL BREAK YOU');
+
+            randomFile(dolphDir, (err, file) => {
+                msg.channel.send(
+                    'If he dies, he dies. ',
+                    {
+                        files: [{
+                            attachment: dolphDir + '/' +file,
+                            name: ''
+                        }]
+                    })
+            });
+            break;
 
             case 'touchdown':
                 msg.channel.send({
