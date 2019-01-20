@@ -30,7 +30,7 @@ function randomMeme(msg){
         let fileValid = true;
         _.forEach(memeRepostBuffer, (previousFile) =>{
             if (previousFile === file){
-                msg.reply("Well, it was going to be "+ file +"but that was just posted...");
+                msg.reply("Well, it was going to be "+ file +" but that was just posted...");
                 fileValid = false;
                 // as of now there would be a ~3/25 chance of a repost per execution, so the odds of running out of buffer should be really small,
                 // still at some point it might be worth having a sanity check for stack overflow...
@@ -51,6 +51,7 @@ function randomMeme(msg){
                 memeRepostBuffer.shift();
             }
         }
+	console.log("memeBufferSize: " + memeRepostBuffer.length);
     })
 
 }
