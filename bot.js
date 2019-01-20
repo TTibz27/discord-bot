@@ -1,27 +1,11 @@
 const Discord = require('discord.js');
 const logger = require('winston');
 const auth = require('./auth.json');
-const request =require('request');
-const randomFile = require('select-random-file');
-const fs = require('fs');
-const scheduler = require('./scheduler');
-const diceRoller = require('./dice-roller');
 
-const imageDir = "./images";
-const crivitzDir = "./images/crivitz";
-const wowDir = "./images/wow";
-const dolphDir = './images/dolph';
+const scheduler = require('./modules/scheduler');
+const diceRoller = require('./modules/dice-roller');
+const memeGenerator = require('./modules/meme-generator');
 
-function downloadImage (uri, filename, callback){
-
-    request.head(uri, function(err, res, body){
-        console.log('content-type:', res.headers['content-type']);
-        console.log('content-length:', res.headers['content-length']);
-
-        request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-    });
-
-}
 
 logger.remove(logger.transports.Console);
 logger.add(logger.transports.Console, {
@@ -37,161 +21,69 @@ const client = new Discord.Client();
 
 client.on('ready', () => {
 
-    client.user.setUsername("MemeBot 2.0");
+    client.user.setUsername("MemeBot 2.1");
     console.log(`Logged in as ${client.user.tag}!`);
 
 });
 
 client.on('message', msg => {
-    if (msg.content === '!ping') {
-        msg.reply('pong');
-    }
-    if (msg.content === '!marco') {
-        msg.reply('polo!');
-    }
-    if (msg.content === "!dolphin"){
-        msg.channel.send({
-            files: [{
-                attachment: './images/dolphinboi.jpg',
-                name: 'dolphinboi.jpg'
-            }]
-        })
-        //.then(console.log)
-            .catch(console.error);
-    }
-
-
-    else if (msg.content === "!meme"){
-        msg.channel.send('Processing Meme request...');
-
-        randomFile(imageDir, (err, file) => {
-            console.log('The random file is: ${file}.');
-            console.log(file);
-
-            msg.channel.send(
-                'Your random meme is...'+file,
-                {
-                    files: [{
-                        attachment: imageDir+'/' +file,
-                        name: ''
-                    }]
-                })
-        })
-    }
-
-    else if (msg.content.substring(0, 1) === '!') {
+    if (msg.content.substring(0, 1) === '!') {
+        //get the message string
         let message = msg.content;
+        // break it down into an array of words
         let args = message.substring(1).split(' ');
+        //check the first word for see which command it is
         let cmd = args[0].toLowerCase();
 
         logger.debug("COMMAND FOUND");
         logger.debug(cmd);
         logger.debug(args);
 
+        // Find the correct command
         switch(cmd){
             case 'add':
-
-                let folder = "";
-                if (args[1]){folder = args[1].toLowerCase();}
-
-                let tempDir = imageDir;
-
-                if (folder === "crivitz"){
-                    tempDir = "./images/crivitz";
-                }
-                else{
-                    folder = "general";
-                }
-
-                if(msg.attachments){
-                    let url = msg.attachments.first().url.replace('https','http');
-                    let filename = tempDir+"/"+msg.attachments.first().filename;
-                    try{
-                        downloadImage(url,filename, function(){
-                            msg.reply('Saved your meme to '+ folder + ' memes!');
-                        });
-                    }
-                    catch(err){
-                        msg.reply("Error found:  "+err)
-                    }
-                }
-                else {
-                    msg.reply('Something went wrong... No attaachment found!');
-                }
+                memeGenerator.addMemes(msg, args[1]);
                 break;
-
+            case 'meme':
+                msg.reply('One repost coming right up!');
+                memeGenerator.randomMeme(msg);
+                break;
             case 'crivitz':
-                msg.channel.send('Pulling a dank crivitz meme...');
-
-                randomFile(crivitzDir, (err, file) => {
-                    msg.channel.send(
-                        'Your Crvitz meme: '+file,
-                        {
-                            files: [{
-                                attachment: crivitzDir + '/' +file,
-                                name: ''
-                            }]
-                        })
-                });
-
+                memeGenerator.crivitz(msg);
                 break;
-
             case 'wow':
-            randomFile(wowDir, (err, file) => {
-                msg.channel.send(
-                    'wow!',
-                    {
-                        files: [{
-                            attachment: wowDir + '/' +file,
-                            name: ''
-                        }]
-                    })
-            });
-            break;
-
+                memeGenerator.owenWilsonMeme(msg);
+                 break;
             case 'dolph':
-            msg.channel.send('I WILL BREAK YOU');
-
-            randomFile(dolphDir, (err, file) => {
-                msg.channel.send(
-                    'If he dies, he dies. ',
-                    {
-                        files: [{
-                            attachment: dolphDir + '/' +file,
-                            name: ''
-                        }]
-                    })
-            });
-            break;
-
+                memeGenerator.dolphMeme(msg);
+                break;
+            case 'dolphin':
+                memeGenerator.dolphinMeme(msg);
+                break;
             case 'touchdown':
-                msg.channel.send({
-                    files: [{
-                        attachment: './images/oobidoo.jpg',
-                        name: 'oobidoo.jpg'
-                    }]
-                });
+                memeGenerator.oobidooMeme(msg);
                 break;
-
             case 'help':
-                msg.reply('!add, !dolphin, !meme');
+                msg.reply('HOW ABOUT YOU HELP URSELF M8');
                 break;
-
             case 'schedule':
-
                 break;
-
+            case 'insult':
+                msg.reply("more insults coming soon, but for now, eat it nerd.");
+                break;
             case 'roll':
                msg.reply(diceRoller.parseDiceCommand(args[1]));
                 break;
-
             case 'flip':
                 msg.reply(diceRoller.coinFlip());
-                break
+                break;
+            case 'marco':
+                msg.reply("polo!");
+                break;
+            case 'ping':
+                msg.reply("pong!");
         }
     }
 });
 
-
 client.login(auth.token);
-
