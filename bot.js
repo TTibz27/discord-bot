@@ -1,28 +1,11 @@
 const Discord = require('discord.js');
 const logger = require('winston');
 const auth = require('./auth.json');
-const request =require('request');
 
-const fs = require('fs');
 const scheduler = require('./scheduler');
 const diceRoller = require('./dice-roller');
 const memeGenerator = require('./meme-generator');
 
-const imageDir = "./images";
-const crivitzDir = "./images/crivitz";
-const wowDir = "./images/wow";
-const dolphDir = './images/dolph';
-
-function downloadImage (uri, filename, callback){
-
-    request.head(uri, function(err, res, body){
-        console.log('content-type:', res.headers['content-type']);
-        console.log('content-length:', res.headers['content-length']);
-
-        request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-    });
-
-}
 
 logger.remove(logger.transports.Console);
 logger.add(logger.transports.Console, {
@@ -71,34 +54,7 @@ client.on('message', msg => {
 
         switch(cmd){
             case 'add':
-
-                let folder = "";
-                if (args[1]){folder = args[1].toLowerCase();}
-
-                let tempDir = imageDir;
-
-                if (folder === "crivitz"){
-                    tempDir = "./images/crivitz";
-                }
-                else{
-                    folder = "general";
-                }
-
-                if(msg.attachments){
-                    let url = msg.attachments.first().url.replace('https','http');
-                    let filename = tempDir+"/"+msg.attachments.first().filename;
-                    try{
-                        downloadImage(url,filename, function(){
-                            msg.reply('Saved your meme to '+ folder + ' memes!');
-                        });
-                    }
-                    catch(err){
-                        msg.reply("Error found:  "+err)
-                    }
-                }
-                else {
-                    msg.reply('Something went wrong... No attachment found!');
-                }
+                memeGenerator.addMemes(msg, args[1]);
                 break;
 
             case 'crivitz':
