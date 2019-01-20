@@ -2,9 +2,9 @@ const Discord = require('discord.js');
 const logger = require('winston');
 const auth = require('./auth.json');
 
-const scheduler = require('./scheduler');
-const diceRoller = require('./dice-roller');
-const memeGenerator = require('./meme-generator');
+const scheduler = require('./modules/scheduler');
+const diceRoller = require('./modules/dice-roller');
+const memeGenerator = require('./modules/meme-generator');
 
 
 logger.remove(logger.transports.Console);
@@ -86,6 +86,4 @@ client.on('message', msg => {
     }
 });
 
-
 client.login(auth.token);
-
