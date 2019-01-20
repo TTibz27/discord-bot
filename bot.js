@@ -2,10 +2,11 @@ const Discord = require('discord.js');
 const logger = require('winston');
 const auth = require('./auth.json');
 const request =require('request');
-const randomFile = require('select-random-file');
+
 const fs = require('fs');
 const scheduler = require('./scheduler');
 const diceRoller = require('./dice-roller');
+const memeGenerator = require('./meme-generator');
 
 const imageDir = "./images";
 const crivitzDir = "./images/crivitz";
@@ -50,33 +51,13 @@ client.on('message', msg => {
         msg.reply('polo!');
     }
     if (msg.content === "!dolphin"){
-        msg.channel.send({
-            files: [{
-                attachment: './images/dolphinboi.jpg',
-                name: 'dolphinboi.jpg'
-            }]
-        })
-        //.then(console.log)
-            .catch(console.error);
+        memeGenerator.dolphinMeme(msg);
     }
 
-
     else if (msg.content === "!meme"){
-        msg.channel.send('Processing Meme request...');
+        msg.reply('One repost coming right up!');
+        memeGenerator.randomMeme(msg);
 
-        randomFile(imageDir, (err, file) => {
-            console.log('The random file is: ${file}.');
-            console.log(file);
-
-            msg.channel.send(
-                'Your random meme is...'+file,
-                {
-                    files: [{
-                        attachment: imageDir+'/' +file,
-                        name: ''
-                    }]
-                })
-        })
     }
 
     else if (msg.content.substring(0, 1) === '!') {
@@ -116,65 +97,28 @@ client.on('message', msg => {
                     }
                 }
                 else {
-                    msg.reply('Something went wrong... No attaachment found!');
+                    msg.reply('Something went wrong... No attachment found!');
                 }
                 break;
 
             case 'crivitz':
-                msg.channel.send('Pulling a dank crivitz meme...');
-
-                randomFile(crivitzDir, (err, file) => {
-                    msg.channel.send(
-                        'Your Crvitz meme: '+file,
-                        {
-                            files: [{
-                                attachment: crivitzDir + '/' +file,
-                                name: ''
-                            }]
-                        })
-                });
-
+                memeGenerator.crivitz(msg);
                 break;
 
             case 'wow':
-            randomFile(wowDir, (err, file) => {
-                msg.channel.send(
-                    'wow!',
-                    {
-                        files: [{
-                            attachment: wowDir + '/' +file,
-                            name: ''
-                        }]
-                    })
-            });
+                memeGenerator.owenWilsonMeme(msg);
             break;
 
             case 'dolph':
-            msg.channel.send('I WILL BREAK YOU');
-
-            randomFile(dolphDir, (err, file) => {
-                msg.channel.send(
-                    'If he dies, he dies. ',
-                    {
-                        files: [{
-                            attachment: dolphDir + '/' +file,
-                            name: ''
-                        }]
-                    })
-            });
+                memeGenerator.dolphMeme(msg);
             break;
 
             case 'touchdown':
-                msg.channel.send({
-                    files: [{
-                        attachment: './images/oobidoo.jpg',
-                        name: 'oobidoo.jpg'
-                    }]
-                });
+                memeGenerator.oobidooMeme(msg);
                 break;
 
             case 'help':
-                msg.reply('!add, !dolphin, !meme');
+                msg.reply('HOW ABOUT YOU HELP URSELF M8');
                 break;
 
             case 'schedule':
