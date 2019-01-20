@@ -1,11 +1,15 @@
-const request =require('request');
+const _ =require('lodash');
 const fs = require('fs');
+const request =require('request');
 const randomFile = require('select-random-file');
 
 const imageDir = "./images";
 const crivitzDir = "./images/crivitz";
 const wowDir = "./images/wow";
 const dolphDir = './images/dolph';
+
+const MEME_REPOST_BUFFER_SIZE = 30;
+const memeRepostBuffer = [];
 
 function dolphinMeme (msg) {
     msg.channel.send({
@@ -16,23 +20,39 @@ function dolphinMeme (msg) {
     })
     //.then(console.log)
         .catch(console.error);
-    return;
 }
 
 function randomMeme(msg){
-
     randomFile(imageDir, (err, file) => {
         console.log('The random file is: ${file}.');
         console.log(file);
-        msg.channel.send(
-            'Your random meme is...'+file,
-            {
-                files: [{
-                    attachment: imageDir+'/' +file,
-                    name: ''
-                }]
-            })
+
+        let fileValid = true;
+        _.forEach(memeRepostBuffer, (previousFile) =>{
+            if (previousFile === file){
+                msg.reply("Well, it was going to be "+ file +"but that was just posted...");
+                fileValid = false;
+                // as of now there would be a ~3/25 chance of a repost per execution, so the odds of running out of buffer should be really small,
+                // still at some point it might be worth having a sanity check for stack overflow...
+                randomMeme(msg);
+                return;
+            }
+        });
+
+        if(fileValid) {
+            memeRepostBuffer.push(file);
+            msg.channel.send('Your random meme is...' + file,
+                {
+                    files: [{attachment: imageDir + '/' + file, name: ''}]
+                });
+
+            if (memeRepostBuffer.length > MEME_REPOST_BUFFER_SIZE){
+                //removes the oldest
+                memeRepostBuffer.shift();
+            }
+        }
     })
+
 }
 
 function crivitz(msg){
@@ -127,7 +147,6 @@ function downloadImage (uri, filename, callback){
         request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
     });
 }
-
 
 module.exports = {
     dolphinMeme:dolphinMeme,
