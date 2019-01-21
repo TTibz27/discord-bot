@@ -5,7 +5,7 @@ const auth = require('./auth.json');
 const scheduler = require('./modules/scheduler');
 const diceRoller = require('./modules/dice-roller');
 const memeGenerator = require('./modules/meme-generator');
-
+const insultGen = require('./submodules/random-insult-gen/random-insult-gen');
 
 logger.remove(logger.transports.Console);
 logger.add(logger.transports.Console, {
@@ -69,7 +69,7 @@ client.on('message', msg => {
             case 'schedule':
                 break;
             case 'insult':
-                msg.reply("more insults coming soon, but for now, eat it nerd.");
+                msg.channel.send(insultGen.randomInsultGenerator(args[1]));
                 break;
             case 'roll':
                msg.reply(diceRoller.parseDiceCommand(args[1]));
