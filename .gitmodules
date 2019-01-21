@@ -1,0 +1,3 @@
+[submodule "submodules/random-insult-gen"]
+	path = submodules/random-insult-gen
+	url = https://github.com/Royal-Crown-Cola/random-insult-gen.git

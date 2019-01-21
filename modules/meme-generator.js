@@ -157,4 +157,4 @@ module.exports = {
     dolphMeme:dolphMeme,
     oobidooMeme:oobidooMeme,
     addMemes:addMemes
-}
+};
