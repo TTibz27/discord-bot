@@ -77,6 +77,9 @@ client.on('message', msg => {
             case 'help':
                 msg.reply('HOW ABOUT YOU HELP URSELF M8');
                 break;
+            case 'tom':
+                msg.reply('Tom u suck');
+                break;
             case 'schedule':
                 break;
             case 'insult':
