@@ -2,6 +2,7 @@
 const Discord = require('discord.js');
 const logger = require('winston');
 const auth = require('./auth.json');
+const extIp = require('externalip');
 
 //these are our own modules contained in this repo , and submodules pulled in from external git repos
 const scheduler = require('./modules/scheduler');
@@ -97,6 +98,13 @@ client.on('message', msg => {
             case 'stats':
                 msg.reply("uptime : " + client.uptime + " ms \n  ping : " + client.ping);
                 break;
+            case 'ip':
+                console.log("ip hit");
+                    extIp((nullVal, ip )=>{
+                        msg.reply("exteral IP is: " + ip, " \n We should be serving SSH on port 2139, if not, yell at Tom.");
+                    })
+                break;
+    
 
         }
     }
