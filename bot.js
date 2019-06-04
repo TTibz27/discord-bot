@@ -104,7 +104,7 @@ client.on('message', msg => {
             case 'ip':
                 console.log("ip hit");
                     extIp((nullVal, ip )=>{
-                        msg.reply("exteral IP is: " + ip, " \n We should be serving SSH on port 2139, if not, yell at Tom.");
+                        msg.reply("exteral IP is: " + ip + " \n We should be serving SSH on port 2139, if not, yell at Tom.");
                     })
                 break;
     
@@ -124,7 +124,7 @@ client.on('messageReactionAdd',(msgReaction, user)=>{
 client.on('error', ()=>{
 
 });
-
+g
 
 //Once we have set up how our bot will react to messages coming in, we will log into the server and it should be good to go!
 client.login(auth.token);
