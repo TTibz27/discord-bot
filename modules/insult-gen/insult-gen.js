@@ -1,4 +1,4 @@
-module.exports = function randomInsultGenerator(filename, name, callback) {
+module.exports = function insultGenerator(filename, name, callback) {
     const fs = require('fs');
     fs.readFile(filename, function (err, data) {
         if (err) throw err;
