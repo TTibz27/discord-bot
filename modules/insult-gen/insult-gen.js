@@ -10,11 +10,10 @@ module.exports = {
                 const names = ["Tom", "Ben", "Scott", "Quinn", "Niel", "Mike", "Gudac", "David", "Alex", "Carlos", "Cyndi", "Vic"];
                 name = names[Math.floor(Math.random() * names.length)];
                 insult = `Hey ${name}! ${lines[+randomNum]}`;
-                callback(null, insult);
+                callback(insult);
             });
         } else if (name.toLowerCase() === "denver" || name.toLowerCase() === "colorado") {
-            insult = `${name} is a god damned hellhole. it snows all the time and its hard to breathe there."+
-            "Tom would have left this as a positive comment if he didnt have to go in and fix Ski's code.`;
+            insult = "Why are you even asking me, you know you can just @ Gudac right?";
             callback(null, insult);
         } else if (name === "memebot") {
             fs.readFile("./modules/insult-gen/hal.txt", function (err, data) {
@@ -22,7 +21,7 @@ module.exports = {
                 const lines = data.toString("utf-8").split("\n");
                 const randomNum = [Math.floor(Math.random() * lines.length)];
                 insult = `${lines[+randomNum]}`;
-                callback(null, insult);
+                callback(insult);
             });
         }
         else {
@@ -31,10 +30,8 @@ module.exports = {
                 const lines = data.toString("utf-8").split("\n");
                 const randomNum = [Math.floor(Math.random() * lines.length)];
                 insult = `Hey ${name}! ${lines[+randomNum]}`;
-                callback(null, insult);
+                callback(insult);
             });
         }
-
-        return insult;
     }
 };

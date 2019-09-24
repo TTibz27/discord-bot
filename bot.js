@@ -47,11 +47,14 @@ client.on('message', msg => {
         //check the first word for see which command it is
         let cmd = args[0].toLowerCase();
 
-        logger.debug("COMMAND FOUND");
+        logger.debug("We found a command!");
         logger.debug(cmd);
         logger.debug(args);
 
         // Find the correct command from our switch statement (half of these are inside jokes for any confused random onlookers)
+
+        //todo - we should change this switch statement to be a loop that will match arg[0] with a map of the functions.
+        // like "memecommands = { commandName: function for command}. lodash would be helpfuk here.
         switch(cmd){
             case 'add':
                 memeGenerator.addMemes(msg, args[1]); // args[1] is the second word parsed above
@@ -79,14 +82,14 @@ client.on('message', msg => {
                 msg.reply('HOW ABOUT YOU HELP URSELF M8');
                 break;
             case 'tom':
-                msg.reply('Tom u suck');
+                msg.reply('Tom Pls');
                 break;
             case 'schedule':
                 break;
             case 'insult':
-                msg.channel.send(insultGenerator.insult(args[1], function (err, line) {
-                    console.log(line);
-                }));
+                insultGenerator.insult(args[1], function (insult) {
+                    msg.channel.send(insult);
+                });
                 break;
             case 'roll':
                msg.reply(diceRoller.parseDiceCommand(args[1]));
@@ -106,12 +109,14 @@ client.on('message', msg => {
             case 'ip':
                 console.log("ip hit");
                     extIp((nullVal, ip )=>{
-                        msg.reply("exteral IP is: " + ip + " \n We should be serving SSH on port 2139, if not, yell at Tom.");
-                    })
+                        msg.reply("external IP is: " + ip + " \n We used to serve SSH on port 2139. Tom realized he didn't want to get hacked tho.");
+                    });
                 break;
-    
-
         }
+    }
+    else if (msg.content.toLowerCase().match(/memebot/g)){
+        let flip = Math.ceil(Math.random() * 2);
+        return flip === 1 ? msg.reply("......") : msg.reply("ゴゴゴゴ");
     }
 });
 
