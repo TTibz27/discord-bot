@@ -3,7 +3,7 @@ module.exports = {
         const fs = require("fs");
         let insult = "";
         if (!name) {
-            fs.readFile("insult.txt", function (err, data) {
+            fs.readFile("./modules/insult-gen/insult.txt", function (err, data) {
                 if (err) throw err;
                 const lines = data.toString("utf-8").split("\n");
                 const randomNum = [Math.floor(Math.random() * lines.length)];
@@ -17,16 +17,16 @@ module.exports = {
             "Tom would have left this as a positive comment if he didnt have to go in and fix Ski's code.`;
             callback(null, insult);
         } else if (name === "memebot") {
-            fs.readFile("hal.txt", function (err, data) {
+            fs.readFile("./modules/insult-gen/hal.txt", function (err, data) {
                 if (err) throw err;
                 const lines = data.toString("utf-8").split("\n");
                 const randomNum = [Math.floor(Math.random() * lines.length)];
-                insult = `${lines[+randomNum]}`
+                insult = `${lines[+randomNum]}`;
                 callback(null, insult);
             });
         }
         else {
-            fs.readFile("insult.txt", function (err, data) {
+            fs.readFile("./modules/insult-gen/insult.txt", function (err, data) {
                 if (err) throw err;
                 const lines = data.toString("utf-8").split("\n");
                 const randomNum = [Math.floor(Math.random() * lines.length)];
