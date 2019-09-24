@@ -8,7 +8,7 @@ const extIp = require('externalip');
 const scheduler = require('./modules/scheduler');
 const diceRoller = require('./modules/dice-roller');
 const memeGenerator = require('./modules/meme-generator');
-const insultGen = require('./submodules/random-insult-gen/random-insult-gen');
+const insultGenerator = require('./modules/insult-gen/insult-gen');
 
 // this sets up our logger, which we can use to see messages when we run it from a command line or if we concatenate it to a file
 logger.remove(logger.transports.Console);
@@ -84,7 +84,9 @@ client.on('message', msg => {
             case 'schedule':
                 break;
             case 'insult':
-                msg.channel.send(insultGen.randomInsultGenerator(args[1]));
+                msg.channel.send(insultGenerator("insult.txt", args[1], function (err, line) {
+                    console.log(line);
+                }));
                 break;
             case 'roll':
                msg.reply(diceRoller.parseDiceCommand(args[1]));
