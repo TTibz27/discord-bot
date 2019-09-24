@@ -84,7 +84,7 @@ client.on('message', msg => {
             case 'schedule':
                 break;
             case 'insult':
-                msg.channel.send(insultGenerator.insult( args[1], function (err, line) {
+                msg.channel.send(insultGenerator.insult(args[1], function (err, line) {
                     console.log(line);
                 }));
                 break;

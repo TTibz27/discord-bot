@@ -10,7 +10,7 @@ module.exports = {
                 const names = ["Tom", "Ben", "Scott", "Quinn", "Niel", "Mike", "Gudac", "David", "Alex", "Carlos", "Cyndi", "Vic"];
                 name = names[Math.floor(Math.random() * names.length)];
                 insult = `Hey ${name}! ${lines[+randomNum]}`;
-               return insult;
+                callback(null, insult);
             });
         } else if (name.toLowerCase() === "denver" || name.toLowerCase() === "colorado") {
             insult = `${name} is a god damned hellhole. it snows all the time and its hard to breathe there."+
@@ -22,7 +22,7 @@ module.exports = {
                 const lines = data.toString("utf-8").split("\n");
                 const randomNum = [Math.floor(Math.random() * lines.length)];
                 insult = `${lines[+randomNum]}`;
-                return insult;
+                callback(null, insult);
             });
         }
         else {
@@ -31,8 +31,10 @@ module.exports = {
                 const lines = data.toString("utf-8").split("\n");
                 const randomNum = [Math.floor(Math.random() * lines.length)];
                 insult = `Hey ${name}! ${lines[+randomNum]}`;
-                return insult;
+                callback(null, insult);
             });
         }
+
+        return insult;
     }
 };
