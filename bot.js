@@ -116,7 +116,7 @@ client.on('message', msg => {
     }
     else if (msg.content.toLowerCase().match(/memebot/g)){
         let flip = Math.ceil(Math.random() * 2);
-        return flip === 1 ? msg.reply("......") : msg.reply("ゴゴゴゴ");
+        return flip === 1 ? msg.channel.send("......") : msg.channel.send("ゴゴゴゴ");
     }
 });
 
