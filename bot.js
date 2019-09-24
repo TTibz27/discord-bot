@@ -126,7 +126,6 @@ client.on('messageReactionAdd',(msgReaction, user)=>{
 client.on('error', ()=>{
 
 });
-g
 
 //Once we have set up how our bot will react to messages coming in, we will log into the server and it should be good to go!
 client.login(auth.token);
