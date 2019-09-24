@@ -104,7 +104,7 @@ client.on('message', msg => {
             case 'ip':
                 console.log("ip hit");
                     extIp((nullVal, ip )=>{
-                        msg.reply("exteral IP is: " + ip, " \n We should be serving SSH on port 2139, if not, yell at Tom.");
+                        msg.reply("exteral IP is: " + ip + " \n We should be serving SSH on port 2139, if not, yell at Tom.");
                     })
                 break;
     
