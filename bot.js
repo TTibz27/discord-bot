@@ -4,6 +4,8 @@ const logger = require('winston');
 const auth = require('./auth.json');
 const extIp = require('externalip');
 
+const commands = require('./modules/commands');
+
 //these are our own modules contained in this repo , and submodules pulled in from external git repos
 const scheduler = require('./modules/scheduler');
 const diceRoller = require('./modules/dice-roller');
@@ -51,57 +53,48 @@ client.on('message', msg => {
         logger.debug(cmd);
         logger.debug(args);
 
-        // Find the correct command from our switch statement (half of these are inside jokes for any confused random onlookers)
+        // loop through commands in command modules
+        // Check here for meme commands
+        for (let key in commands.memeCommands) {
+            if (key === cmd){
+                commands.memeCommands[key](msg, args);
+            }
+        }
 
-        //todo - we should change this switch statement to be a loop that will match arg[0] with a map of the functions.
-        // like "memecommands = { commandName: function for command}. lodash would be helpfuk here.
+        //dice/rng commands
+        for (let key in commands.diceCommands) {
+            if (key === cmd){
+                commands.diceCommands[key](msg, args);
+            }
+        }
+
+        //insult commands
+        for (let key in commands.insultCommands) {
+            if (key === cmd){
+                commands.insultCommands[key](msg, args);
+            }
+        }
+
+        //misc
+        for (let key in commands.miscCommands) {
+            if (key === cmd){
+                commands.miscCommands[key](msg, args);
+            }
+        }
+
+        //custom commands
+        for (let i = 0; i < commands.customCommands.length; i ++) {
+            if (cmd === commands.customCommands[i].name){
+                msg.channel.send(commands.customCommands[i].message);
+            }
+        }
+
+
+        // these will be commands that are inherently more tied to the client, or more complicated than just user input.
         switch(cmd){
-            case 'add':
-                memeGenerator.addMemes(msg, args[1]); // args[1] is the second word parsed above
-                break;
-            case 'meme':
-                msg.reply('One repost coming right up!');
-                memeGenerator.randomMeme(msg);
-                break;
-            case 'crivitz':
-                memeGenerator.crivitz(msg);
-                break;
-            case 'wow':
-                memeGenerator.owenWilsonMeme(msg);
-                 break;
-            case 'dolph':
-                memeGenerator.dolphMeme(msg);
-                break;
-            case 'dolphin':
-                memeGenerator.dolphinMeme(msg);
-                break;
-            case 'touchdown':
-                memeGenerator.oobidooMeme(msg);
-                break;
-            case 'help':
-                msg.reply('HOW ABOUT YOU HELP URSELF M8');
-                break;
-            case 'tom':
-                msg.reply('Tom Pls');
-                break;
-            case 'schedule':
-                break;
-            case 'insult':
-                insultGenerator.insult(args[1], function (insult) {
-                    msg.channel.send(insult);
-                });
-                break;
-            case 'roll':
-               msg.reply(diceRoller.parseDiceCommand(args[1]));
-                break;
-            case 'flip':
-                msg.reply(diceRoller.coinFlip());
-                break;
-            case 'marco':
-                msg.reply("polo!");
-                break;
-            case 'ping':
-                msg.reply("pong!");
+            case 'addcommand':
+               logger.debug("command parsing");
+               commands.addCustom(msg, args);
                 break;
             case 'stats':
                 msg.reply("uptime : " + client.uptime + " ms \n  ping : " + client.ping);
