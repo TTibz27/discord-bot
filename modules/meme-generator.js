@@ -32,7 +32,8 @@ function randomMeme(msg){
             if (previousFile === file){
                 msg.reply("Well, it was going to be "+ file +" but that was just posted...");
                 fileValid = false;
-                // as of now there would be a ~3/25 chance of a repost per execution, so the odds of running out of buffer should be really small,
+                // as of now there would be a ~3/25 chance of a repost per execution, so the odds of
+                // running out of buffer should be really small,
                 // still at some point it might be worth having a sanity check for stack overflow...
                 randomMeme(msg);
                 return;

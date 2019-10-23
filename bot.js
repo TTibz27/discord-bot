@@ -21,6 +21,11 @@ logger.level = 'debug';
 
 logger.info('Logger has started');
 
+
+
+console.log("initializing...");
+commands.initCustomCommands();
+
 console.log("starting....");
 
 // This creates a "client" object, which is what makes the connection to discord
@@ -34,13 +39,18 @@ const client = new Discord.Client();
 client.on('ready', () => {
 
     client.user.setUsername("MemeBot 2.1");
-    console.log(`Logged in as ${client.user.tag}!`);
+    console.log('Logged in as ' + client.user.tag + '!');
 
 });
 
 // this handles messages. it will check any message from any channel that is visible to the bot,
 // so if we want to do channel specific actions or user specific or anything, we should filter that here.
 client.on('message', msg => {
+
+    if (msg.author.bot === true){
+        return;
+    }
+
     if (msg.content.substring(0, 1) === '!') {
         //get the message string
         let message = msg.content;
@@ -85,7 +95,16 @@ client.on('message', msg => {
         //custom commands
         for (let i = 0; i < commands.customCommands.length; i ++) {
             if (cmd === commands.customCommands[i].name){
-                msg.channel.send(commands.customCommands[i].message);
+                const foundCommand = commands.customCommands[i];
+                if (foundCommand.file){
+                    msg.channel.send(foundCommand.message,
+                        {
+                            files: [{attachment: foundCommand.file, name: ''}]
+                        });
+                }
+                else{
+                    msg.channel.send(foundCommand.message);
+                }
             }
         }
 
@@ -93,8 +112,7 @@ client.on('message', msg => {
         // these will be commands that are inherently more tied to the client, or more complicated than just user input.
         switch(cmd){
             case 'addcommand':
-               logger.debug("command parsing");
-               commands.addCustom(msg, args);
+                commands.addCustom(msg, args);
                 break;
             case 'stats':
                 msg.reply("uptime : " + client.uptime + " ms \n  ping : " + client.ping);
