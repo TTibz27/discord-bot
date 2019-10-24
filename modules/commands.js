@@ -62,18 +62,24 @@ function addCustomCommand (msg, args){
     for (let i = 0; i < customCommands.length; i++) {
         if (args[1].toLowerCase() === customCommands[i].name) {
             msg.reply("removing old command...");
-            customCommands.splice(i);
+            customCommands.splice(i, 1);
         }
     }
     // This .first() will return undefined if there is no object in the collection...
     // the collection object is weird in discordjs for some reason, and caches if you try to make an array?
     // I just want to know if one exists, why do I have to use a special library for that?
-    if(msg.attachments.first()){
+    if(msg.attachments.first() &&  msg.attachments.first().url){
         let url = msg.attachments.first().url.replace('https','http');
         let filename = attachmentDir +"/"+msg.attachments.first().filename;
         try{
             downloadImage(url,filename, function(){
                 msg.reply('Image Command Saved!');
+                fs.writeFileSync(customCommandFile, JSON.stringify(customCommands) , function(err) {
+                    if(err) {
+                        return console.log(err);
+                    }
+                    console.log("The file was saved!");
+                });
             });
             customCommands.push({name: args[1].toLowerCase(), message: args.slice(2).join(" "), file: filename});
         }
@@ -85,21 +91,19 @@ function addCustomCommand (msg, args){
         if (!args[2]){
             msg.reply("This command has no text, so it will not be added.")
         }
-        else{
+        else {
             customCommands.push({name: args[1].toLowerCase(), message: args.slice(2).join(" "), file: null});
             msg.reply("New command added!");
+            fs.writeFileSync(customCommandFile, JSON.stringify(customCommands) , function(err) {
+                if(err) {  return console.log(err); }
+                console.log("The file was saved!");
+            });
         }
     }
+
     if (customCommands.length >0){
         //save array to file
-        fs.writeFileSync(customCommandFile, JSON.stringify(customCommands) , function(err) {
 
-            if(err) {
-                return console.log(err);
-            }
-
-            console.log("The file was saved!");
-        });
 
     }
 }
