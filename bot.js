@@ -11,6 +11,7 @@ const scheduler = require('./modules/scheduler');
 const diceRoller = require('./modules/dice-roller');
 const memeGenerator = require('./modules/meme-generator');
 const insultGenerator = require('./modules/insult-gen/insult-gen');
+const reactions = require('./modules/reaction-handlers');
 
 // this sets up our logger, which we can use to see messages when we run it from a command line or if we concatenate it to a file
 logger.remove(logger.transports.Console);
@@ -133,8 +134,12 @@ client.on('message', msg => {
 
 // this handles reacts to messages. I am not sure what we are going to do with this yet, so for now we will just log it.
 client.on('messageReactionAdd',(msgReaction, user)=>{
-    logger.info(msgReaction.emoji.identifier);
-    logger.info(user);
+    logger.info(msgReaction.emoji.name);
+    logger.info(user.username);
+
+    reactions.handleReactionEvent(msgReaction,user, client);
+    //random thought, it might be cool to log who uses which reactions. or which reactions are used the most.
+
 });
 
 //this will happen when the websocket is disconnected. we can add stuff here to allow the bot to gracefully shut down,
