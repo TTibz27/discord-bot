@@ -7,6 +7,7 @@ const fs = require('fs');
 const request =require('request');
 const attachmentDir = "images/custom";
 const customCommandFile = "config/commands.txt";
+const md5File = require('md5-file');
 // Custom Commands will be an array of objects so we can leverage array functions, ie push
 const customCommands = [];
 
@@ -70,7 +71,7 @@ function addCustomCommand (msg, args){
     // I just want to know if one exists, why do I have to use a special library for that?
     if(msg.attachments.first() &&  msg.attachments.first().url){
         let url = msg.attachments.first().url.replace('https','http');
-        let filename = attachmentDir +"/"+msg.attachments.first().filename;
+        let filename = attachmentDir +"/"+ Math.floor(new Date() / 1000)+ "_" +msg.attachments.first().filename ;
         try{
             downloadImage(url,filename, function(){
                 msg.reply('Image Command Saved!');

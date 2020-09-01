@@ -124,7 +124,7 @@ function addMemes(msg, inFolder){
 
     if(msg.attachments){
         let url = msg.attachments.first().url.replace('https','http');
-        let filename = tempDir+"/"+msg.attachments.first().filename;
+        let filename = tempDir +"/"+ Math.floor(new Date() / 1000)+ "_" +msg.attachments.first().filename ;
         try{
             downloadImage(url,filename, function(){
                 msg.reply('Saved your meme to '+ folder + ' memes!');
