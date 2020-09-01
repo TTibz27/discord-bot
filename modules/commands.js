@@ -7,7 +7,6 @@ const fs = require('fs');
 const request =require('request');
 const attachmentDir = "images/custom";
 const customCommandFile = "config/commands.txt";
-const md5File = require('md5-file');
 // Custom Commands will be an array of objects so we can leverage array functions, ie push
 const customCommands = [];
 
